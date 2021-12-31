@@ -4,7 +4,7 @@
  *  Created on: Dec 30, 2021
  *      Author: Luis (lmtanco@uma.es)
  *
- *  Follows teachings of Dan Saks but places registers individually
+ *  Follows teachings of Dan Saks 
  */
 
 #ifndef EUMA_WATCHDOG_HPP_
