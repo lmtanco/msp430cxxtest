@@ -35,7 +35,7 @@ void main(void)
 	// stop watchdog timer
     the_watchdog.stop();
 
-    // next!
+    // set DCO speed to 1MHz
     the_clock.set_dco(DCOFREQ::_1MHZ);
 
     // configure port 1.6 and 1.0 as output.
