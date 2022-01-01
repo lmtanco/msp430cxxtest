@@ -13,7 +13,7 @@ The idea is to have an "Easy to use correctly, difficult to use incorrectly" sof
 These are fragments of the main.cpp which tests the library: 
 
 ```
-	// stop watchdog timer
+    // stop watchdog timer
     the_watchdog.stop();
 
     // set DCO speed to 1MHz
@@ -26,6 +26,6 @@ These are fragments of the main.cpp which tests the library:
     port1.set_output(GPIO::BIT0);
 
     // Configure timer_interrupt
-	the_watchdog.set_timer_interrupt(ISR_Watchdog, WATCHDOG::_32ms);
+    the_watchdog.set_timer_interrupt(ISR_Watchdog, WATCHDOG::_32ms);
 
 ```
