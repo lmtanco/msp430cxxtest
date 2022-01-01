@@ -45,7 +45,7 @@ public:
     }
 
     // Configurar como salida, usa "OR" para modificar los bits
-    void is_output(bits which = bits::ALL) {
+    void as_output(bits which = bits::ALL) {
         _PxDIR |= which;
     }
     // Poner salida a nivel alto "1", usa "OR" para modificar los bits.

@@ -20,7 +20,7 @@ These are fragments of the main.cpp which tests the library:
     the_clock.set_dco(DCOFREQ::_1MHZ);
 
     // configure port 1.6 and 1.0 as output.
-    port1.is_output(GPIO::BIT0 | GPIO::BIT6);
+    port1.as_output(GPIO::BIT0 | GPIO::BIT6);
 
     // set p1.0
     port1.set_output(GPIO::BIT0);
