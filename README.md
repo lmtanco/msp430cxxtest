@@ -10,7 +10,7 @@ Using ideas from Dan Saks explained in this two conferences:
 
 The idea is to have an "Easy to use correctly, difficult to use incorrectly" software interface to the msp430g2553. 
 
-These are fragments of the main.cpp which tests the library is as follows: 
+These are fragments of the main.cpp which tests the library: 
 
 ```
 	// stop watchdog timer
