@@ -56,7 +56,7 @@ public:
     }
     // Poner salida a nivel alto "1", usa "OR" para modificar los bits.
     // Sólo modifican los bits de which que sean de salida.
-    void reset_output(bits which = bits::ALL)
+    inline void reset_output(bits which = bits::ALL)
     {
         _PxOUT &= ~(which & _PxDIR);
     }
