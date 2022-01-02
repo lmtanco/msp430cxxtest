@@ -12,7 +12,8 @@ The idea is to have an "Easy to use correctly, difficult to use incorrectly" sof
 
 These are fragments of the main.cpp which tests the library: 
 
-```
+```C++
+
     // stop watchdog timer
     the_watchdog.stop();
 
@@ -24,6 +25,12 @@ These are fragments of the main.cpp which tests the library:
 
     // set p1.0
     port1.set_output(GPIO::BIT0);
+    
+    // Set p1.3 as pullup input
+    port1.as_input(GPIO::BIT3, GPIO::PULLUP);
+
+    // Set falling edge interrupt at p1.3
+    port1.set_interrupt(GPIO::BIT3, GPIO::FALLING, ISR_Port1);
 
     // Configure timer_interrupt
     the_watchdog.set_timer_interrupt(ISR_Watchdog, WATCHDOG::_32ms);
