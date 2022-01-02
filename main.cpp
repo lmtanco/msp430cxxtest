@@ -56,7 +56,7 @@ void main(void)
     // Set p1.3 as pullup input
     port1.as_input(GPIO::BIT3, GPIO::PULLUP);
 
-    // TODO !
+    // Set falling edge interrupt at p1.3
     port1.set_interrupt(GPIO::BIT3, GPIO::FALLING, ISR_Port1);
 
     // Configure timer_interrupt
