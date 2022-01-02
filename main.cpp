@@ -13,19 +13,28 @@
 #include "clock.hpp"
 
 uint8_t events = 0;
-#define EV1 0x01
+constexpr uint8_t EV1=0x01;
+constexpr uint8_t EV2=0x02;
 
 
 using namespace euma;
 
 __interrupt void ISR_Watchdog()
 {
-    static int counter = 10;
+    static auto counter = 10;
     --counter;
 
     // A los 3.2 s se cambia los leds.
     if (counter == 0) {
       events |= EV1;
+    }
+}
+
+__interrupt void ISR_Port1()
+{
+    if (port1.is_interrupt_pending(GPIO::BIT3)) {
+        events |= EV2;
+        port1.clear_interrupt_flags(GPIO::BIT3);
     }
 }
 
@@ -44,9 +53,11 @@ void main(void)
     // set p1.0
     port1.set_output(GPIO::BIT0);
 
+    // Set p1.3 as pullup input
+    port1.as_input(GPIO::BIT3, GPIO::PULLUP);
+
     // TODO !
-    // port1.is_input(GPIO::BIT3, GPIO::PULLUP);
-    // port1.set_interrupt(GPIO::BIT3, GPIO::FALLING, ISR_Port1);
+    port1.set_interrupt(GPIO::BIT3, GPIO::FALLING, ISR_Port1);
 
     // Configure timer_interrupt
 	the_watchdog.set_timer_interrupt(ISR_Watchdog,
@@ -61,6 +72,11 @@ void main(void)
 	        events &= ~EV1;
 	        port1.reset_output(GPIO::BIT0);
 	        port1.set_output(GPIO::BIT6);
+	    }
+	    if (events & EV2) {
+            events &= ~EV2;
+            port1.reset_output(GPIO::BIT6);
+            port1.set_output(GPIO::BIT0);
 
 	    }
 	}
