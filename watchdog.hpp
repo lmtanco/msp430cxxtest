@@ -68,6 +68,12 @@ public:
         // Esto se hace en IE1
         the_sfrs.enable_wdt_interrupt();
     }
+
+    void disable_timer_interrupt()
+    {
+        // Esto se hace en IE1.
+        the_sfrs.disable_wdt_interrupt();
+    }
 private:
     device_register16 _WDTCTL;
 };
