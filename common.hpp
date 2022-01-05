@@ -26,6 +26,7 @@
 
 #include <intrinsics.h>
 #include <cstdint>
+#include <type_traits>
 
 // Namespace uma
 namespace euma {
@@ -87,7 +88,7 @@ private:
     device_register8 _IFG2;
 };
 
-SFR& the_sfrs = *new SFR{};
+extern SFR& the_sfrs;
 
 // Nos aseguramos de que el layout de la clase es el esperado:
 // - El primer atributo no estático está a offset cero
