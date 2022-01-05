@@ -4,9 +4,9 @@
 
 First attempts at creating a c++ hw abstraction layer for the TI msp430g2553 microcontroller. 
 
-Using ideas from Dan Saks explained in this two conferences: 
-* [Confefence 1: Memory-Mapped Devices as Objects - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
-* [Conference 2: Writing better embedded Software - Embedded 2018](https://www.youtube.com/watch?v=3VtGCPIoBfs&t=3464s)
+Using ideas from Dan & Ben Saks explained in this two conferences: 
+* [Confefence 1: Memory-Mapped Devices as Objects - Dan Saks - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
+* [Conference 2: Handling a Family of Hardware Devices with a Single Implementation - Ben Saks - CppCon 2021](https://www.youtube.com/watch?v=EM83l5NZ15c)
 
 The idea is to have an "Easy to use correctly, difficult to use incorrectly" software interface to the msp430g2553. 
 
@@ -30,9 +30,9 @@ These are fragments of the main.cpp which tests the library:
     port1.as_input(GPIO::BIT3, GPIO::PULLUP);
 
     // Set falling edge interrupt at p1.3
-    port1.set_interrupt(GPIO::BIT3, GPIO::FALLING, ISR_Port1);
+    port1.enable_interrupt(GPIO::BIT3, GPIO::FALLING);
 
     // Configure timer_interrupt
-    the_watchdog.set_timer_interrupt(ISR_Watchdog, WATCHDOG::_32ms);
+    the_watchdog.enable_timer_interrupt(WATCHDOG::_32ms);
 
 ```
