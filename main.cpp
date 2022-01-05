@@ -19,6 +19,7 @@ constexpr uint8_t EV2=0x02;
 
 using namespace euma;
 
+#pragma vector = WDT_VECTOR
 __interrupt void ISR_Watchdog()
 {
     static auto counter = 10;
@@ -30,7 +31,8 @@ __interrupt void ISR_Watchdog()
     }
 }
 
-__interrupt void ISR_Port1()
+#pragma vector=PORT1_VECTOR
+__interrupt void ISR_Port1(void)
 {
     if (port1.is_interrupt_pending(GPIO::BIT3)) {
         events |= EV2;
@@ -57,11 +59,10 @@ void main(void)
     port1.as_input(GPIO::BIT3, GPIO::PULLUP);
 
     // Set falling edge interrupt at p1.3
-    port1.set_interrupt(GPIO::BIT3, GPIO::FALLING, ISR_Port1);
+    port1.enable_interrupt(GPIO::BIT3, GPIO::FALLING);
 
     // Configure timer_interrupt
-	the_watchdog.set_timer_interrupt(ISR_Watchdog,
-	                                 WATCHDOG::_32ms);
+	the_watchdog.enable_timer_interrupt(WATCHDOG::_32ms);
 
 	// Enable interrupts
 	__enable_interrupt();

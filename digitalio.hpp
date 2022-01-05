@@ -101,8 +101,6 @@ public:
         _PxOUT &= ~(which & _PxDIR);
     }
 
-
-
     // Configurar como entrada, usa AND para modificar los bits
     void as_input(bits which = bits::ALL,
                   input_type what = input_type::NOINTERNALRES) {
@@ -132,11 +130,19 @@ public:
         _PxIE &= ~(which);
     }
 
-    // Poner interrupción. Borra los flags de interrupción
+    // Habilitar interrupción en PxIE y PxIES
+    // También B¡borra los flags de interrupción
     // _PxIFG indicados en which.
-    // Está definida sólo en las especializaciones para el puerto 1 y 2 más abajo.
-    // TODO: dividir e dos: enable_interrupt(bits, edge) y set_isr(poiner_to_ISR). 
-    inline void set_interrupt(bits which, edge type, pointer_to_ISR isr);
+    void enable_interrupt(bits which, edge type) {
+        _PxIFG &= ~(which);
+         _PxIE |= which;
+         if (type == RISING) {
+             _PxIES &= ~(which);
+         }
+         else {
+             _PxIES |= which;
+         }
+    }
 
     // Borar todos los registros ¿útil?
     // void reset_all_registers() {
@@ -163,35 +169,6 @@ private:
     // No estoy seguro de como mapear _PxSEL2 por que no es contiguo :(
     // Habrá que hacerlo con una clase aparte.
 };
-
-
-// Poner interrupción: Especialización para el puerto 1.
- void GPIO_P<1>::set_interrupt(bits which, edge type, pointer_to_ISR isr){
-    _PxIFG &= ~(which);
-    _PxIE |= which;
-    if (type == RISING) {
-        _PxIES &= ~(which);
-    }
-    else {
-        _PxIES |= which;
-    }
-    // Especialización para el puerto 1
-    ivt_table[IVT::PORT1] = isr;
-}
-
- // Poner interrupción: Especialización para el puerto 2.
-  void GPIO_P<2>::set_interrupt(bits which, edge type, pointer_to_ISR isr){
-     _PxIFG &= ~(which);
-     _PxIE |= which;
-     if (type == RISING) {
-         _PxIES &= ~(which);
-     }
-     else {
-         _PxIES |= which;
-     }
-     // Especialización para el puerto 1
-     ivt_table[IVT::PORT2] = isr;
- }
 
 // Nos aseguramos de que el layout de la clase es el esperado:
 // - El primer atributo no estático está a offset cero

@@ -47,10 +47,7 @@ public:
     enum intervals{ _05ms, _8ms, _32ms };
 
     // WDT is clocked by fSMCLK (assumed 1MHz)
-    void set_timer_interrupt(pointer_to_ISR isr, intervals i) {
-
-        // Registrar ISR
-        ivt_table[IVT::number::WATCHDOG] = isr;
+    void enable_timer_interrupt(intervals i) {
 
         // Configurar Intervalo
         switch (i) {

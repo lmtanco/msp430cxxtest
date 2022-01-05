@@ -8,6 +8,22 @@
 #ifndef EUMA_COMMON_HPP_
 #define EUMA_COMMON_HPP_
 
+// Esto es lo único que necesitamos de <msp4302553.h>
+#define TRAPINT_VECTOR          (0 * 1u)                     /* 0xFFE0 TRAPINT */
+#define PORT1_VECTOR            (2 * 1u)                     /* 0xFFE4 Port 1 */
+#define PORT2_VECTOR            (3 * 1u)                     /* 0xFFE6 Port 2 */
+#define ADC10_VECTOR            (5 * 1u)                     /* 0xFFEA ADC10 */
+#define USCIAB0TX_VECTOR        (6 * 1u)                     /* 0xFFEC USCI A0/B0 Transmit */
+#define USCIAB0RX_VECTOR        (7 * 1u)                     /* 0xFFEE USCI A0/B0 Receive */
+#define TIMER0_A1_VECTOR        (8 * 1u)                     /* 0xFFF0 Timer0_A CC1, TA0 */
+#define TIMER0_A0_VECTOR        (9 * 1u)                     /* 0xFFF2 Timer0_A CC0 */
+#define WDT_VECTOR              (10 * 1u)                    /* 0xFFF4 Watchdog Timer */
+#define COMPARATORA_VECTOR      (11 * 1u)                    /* 0xFFF6 Comparator A */
+#define TIMER1_A1_VECTOR        (12 * 1u)                    /* 0xFFF8 Timer1_A CC1-4, TA1 */
+#define TIMER1_A0_VECTOR        (13 * 1u)                    /* 0xFFFA Timer1_A CC0 */
+#define NMI_VECTOR              (14 * 1u)                    /* 0xFFFC Non-maskable */
+#define RESET_VECTOR            (15 * 1u)                    /* 0xFFFE Reset [Highest Priority] */
+
 #include <intrinsics.h>
 #include <cstdint>
 
@@ -17,7 +33,6 @@ namespace euma {
 // Alias de c++, igual que un typedef pero se lee mejor!
 using device_register16 = uint16_t volatile;
 using device_register8 = uint8_t volatile;
-using pointer_to_ISR = void (*)();
 
 // Sólo válida para msp430g2x53 y 13
 #if defined (__MSP430G2553__)
@@ -91,48 +106,8 @@ static_assert(
         "SFR contains extra padding bytes"
         );
 
-// Tabla para que las clases de los periféricos guarden sus ISRs
-
-class IVT {
-public:
-    enum number {
-          begin=18,
-          PORT1=begin,
-          PORT2,
-          RESERVED,
-          ADC,
-          USCI_TX,
-          USCI_RX,
-          TIMER0_CCR1,
-          TIMER0_CCR2 = TIMER0_CCR1,
-          TIMER0_OVERFLOW = TIMER0_CCR1,
-          TIMER0_CCR0,
-          WATCHDOG,
-          COMPARATOR,
-          TIMER1_CCR1,
-          TIMER1_CCR2 = TIMER1_CCR1,
-          TIMER1_OVERFLOW = TIMER1_CCR1,
-          TIMER1_CCR0,
-          NMI,
-          RESET,
-          end
-    };
-    static_assert(static_cast<int>(RESET) == 31,"Wrong number of vectors in table");
-
-    // Método para usar la tabla sólo con los enums de arriba
-    pointer_to_ISR & operator[](number n) {
-        return table[n];
-    }
-
-private:
-    pointer_to_ISR table[end-begin];
-};
-
-// Declaramos referencia a la tabla en la dirección del primer vector (PORT1)
-IVT& ivt_table = *reinterpret_cast<IVT*>(0xFFE4);
-
 #endif
 
 }
-
+//
 #endif /* COMMON_HPP_ */
