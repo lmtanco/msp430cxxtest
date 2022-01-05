@@ -63,25 +63,31 @@ constexpr GPIO::bits operator~(GPIO::bits a) {
     return static_cast<GPIO::bits>(~static_cast<int>(a));
 }
 
-// Puertos digitales del msp4302553
-template <int portnumber>
+// Particularidades del puerto 1
+struct port1_traits {
+    static constexpr std::uintptr_t address{0x20};
+    static device_register8& PxSEL2; //0x041;
+
+};
+
+//Particularidades del puerto 2
+struct port2_traits {
+    static constexpr std::uintptr_t address{0x28};
+    static device_register8& PxSEL2; //0x042;
+};
+
+
+// Puertos digitales del msp4302553.
+template <typename port_traits>
 class GPIO_P: GPIO
 {
-    // Sólo tenemos implementados el puerto 1 y el 2.
-    static_assert(portnumber<=2, "Only implemented for port 1 and port 2");
-
 public:
-
-    //enum portnumber {_1, _2}; // msp4302553 solo tiene 2 puertos
 
     // Una forma de hacer que el watchdog esté bien alineado
     // en memoria es redefinir el operador new.
-    // Además con el placement new podemos añadir el número de puerto
-    static void* operator new(size_t)//, portnumber n)
+    static void* operator new(std::size_t)
     {
-       constexpr auto n = portnumber - 1; // Port 1: n=0, Port 2: n=1, etc.
-       constexpr auto address = 0x20 + n * 0x8; // esto lo hace el compilador.
-       return reinterpret_cast<void*>(address);
+       return reinterpret_cast<void*>(port_traits::address);
     }
 
     // Configurar como salida, usa "OR" para modificar los bits
@@ -163,18 +169,19 @@ private:
     device_register8 _PxIE;
     device_register8 _PxSEL;
     device_register8 _PxREN;
-    //    } r;
+    // _PxSEL2 no está contiguo en memoria, por eso se lo
+    // proporciona port_traits con port_traits::PxSEL2
+     //    } r;
     //    std::array<device_register8,8> a;
     //};
-    // No estoy seguro de como mapear _PxSEL2 por que no es contiguo :(
-    // Habrá que hacerlo con una clase aparte.
+
 };
 
 // Nos aseguramos de que el layout de la clase es el esperado:
 // - El primer atributo no estático está a offset cero
 // - Cada atributo tiene un offset mayor que el atributo justo antes que él.
 static_assert(
-        std::is_standard_layout<GPIO_P<1>>::value,
+        std::is_standard_layout<GPIO_P<port1_traits>>::value,
         "GPIO isn't standard layout"
         );
 
@@ -183,14 +190,14 @@ static_assert(
 // Sirve para comprobar que el compilador no ha metido relleno entre medias
 // del los atributos.
 static_assert(
-        sizeof(GPIO_P<1>) == 8 * sizeof(device_register8),
+        sizeof(GPIO_P<port1_traits>) == 8 * sizeof(device_register8),
         "GPIO contains extra padding bytes"
         );
 // Referencia al puerto 1 que se usa en los programas.
-GPIO_P<1>& port1 = *new GPIO_P<1>{};
+extern GPIO_P<port1_traits>& port1;
 
 // Referencia al puerto 2 que se usa en los programas.
-GPIO_P<2>& port2 = *new GPIO_P<2>{};
+extern GPIO_P<port2_traits>& port2;
 
 }
 
