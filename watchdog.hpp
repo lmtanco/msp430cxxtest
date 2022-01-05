@@ -89,15 +89,5 @@ static_assert(
         "WATCHDOG isn't standard layout"
         );
 
-// La comprobación anterior es necesaria pero no suficiente.
-// Esto es especialmente necesario si hay más de un registro
-// Sirve para comprobar que el compilador no ha metido relleno entre medias
-// del los atributos.
-static_assert(
-        sizeof(WATCHDOG) == sizeof(device_register16),
-        "WATCHDOG contains extra padding bytes"
-        );
-
-}
 
 #endif
