@@ -4,7 +4,7 @@
 
 First attempts at creating a c++ hw abstraction layer for the TI msp430g2553 microcontroller. 
 
-Using ideas from Dan & Ben Saks explained in this two conferences: 
+Using ideas from Dan & Ben Saks explained in these two conferences: 
 * [Confefence 1: Memory-Mapped Devices as Objects - Dan Saks - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
 * [Conference 2: Handling a Family of Hardware Devices with a Single Implementation - Ben Saks - CppCon 2021](https://www.youtube.com/watch?v=EM83l5NZ15c)
 
