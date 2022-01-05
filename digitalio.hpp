@@ -43,7 +43,9 @@ public:
     };
 
     // Tipo de interrupción
-    enum edge {RISING, FALLING};
+    enum edge {RISING,
+               FALLING,
+               LEAVEASITIS};
 
 };
 
@@ -66,14 +68,14 @@ constexpr GPIO::bits operator~(GPIO::bits a) {
 // Particularidades del puerto 1
 struct port1_traits {
     static constexpr std::uintptr_t address{0x20};
-    static device_register8& PxSEL2; //0x041;
+    static device_register8& _PxSEL2; //0x041;
 
 };
 
 //Particularidades del puerto 2
 struct port2_traits {
     static constexpr std::uintptr_t address{0x28};
-    static device_register8& PxSEL2; //0x042;
+    static device_register8& _PxSEL2; //0x042;
 };
 
 
@@ -90,25 +92,31 @@ public:
        return reinterpret_cast<void*>(port_traits::address);
     }
 
+    // Configurar los pines del puerto como puerto
+    constexpr void as_digital_io(bits which = bits::ALL) {
+        _PxSEL &= ~(which);
+        port_traits::_PxSEL2 &= ~(which);
+    }
+
     // Configurar como salida, usa "OR" para modificar los bits
-    void as_output(bits which = bits::ALL) {
+    constexpr void as_output(bits which = bits::ALL) {
         _PxDIR |= which;
     }
     // Poner salida a nivel alto "1", usa "OR" para modificar los bits.
     // Sólo modifica los que sean de salida.
-    void set_output(bits which = bits::ALL)
+    constexpr void set_output(bits which = bits::ALL)
     {
         _PxOUT |= (which & _PxDIR);
     }
     // Poner salida a nivel alto "1", usa "OR" para modificar los bits.
     // Sólo modifican los bits de which que sean de salida.
-    void reset_output(bits which = bits::ALL)
+    constexpr void reset_output(bits which = bits::ALL)
     {
         _PxOUT &= ~(which & _PxDIR);
     }
 
     // Configurar como entrada, usa AND para modificar los bits
-    void as_input(bits which = bits::ALL,
+    constexpr void as_input(bits which = bits::ALL,
                   input_type what = input_type::NOINTERNALRES) {
 
         _PxDIR &= ~(which);
@@ -127,27 +135,47 @@ public:
     }
 
     // Debería poder comprobarse más de una o no?
-    bool is_interrupt_pending(bits which) {
+    constexpr bool is_interrupt_pending(bits which) const {
         return static_cast<bool>(_PxIFG & _PxIE & which);
     }
 
     // Borrar flags de interrupcion;
-    void clear_interrupt_flags(bits which) {
+    constexpr void clear_interrupt_flags(bits which) {
         _PxIE &= ~(which);
     }
 
     // Habilitar interrupción en PxIE y PxIES
     // También B¡borra los flags de interrupción
     // _PxIFG indicados en which.
-    void enable_interrupt(bits which, edge type) {
+    constexpr void enable_interrupt(bits which, edge type=edge::LEAVEASITIS) {
         _PxIFG &= ~(which);
          _PxIE |= which;
          if (type == RISING) {
              _PxIES &= ~(which);
          }
-         else {
+         else if (type == FALLING){
              _PxIES |= which;
          }
+    }
+
+    // Deshabilitar interrupción.
+    // También B¡borra los flags de interrupción
+    // _PxIFG indicados en which.
+    constexpr void disable_interrupt(bits which=GPIO::ALL)
+    {
+        _PxIE &= ~(which);
+        _PxIFG &= ~(which);
+
+    }
+
+    // FIXME: no está claro cómo implementar esto si es más de un bit.
+    constexpr bool is_interrupt_falling(bits which) const{
+        return static_cast<bool>(_PxIES & which);
+    }
+
+    // Cambiar el flanco
+    constexpr void toggle_interrupt_edge(bits which) {
+        _PxIES ^= which;
     }
 
     // Borar todos los registros ¿útil?

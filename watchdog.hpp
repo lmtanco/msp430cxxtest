@@ -88,6 +88,6 @@ static_assert(
         std::is_standard_layout<WATCHDOG>::value,
         "WATCHDOG isn't standard layout"
         );
-
+}
 
 #endif
