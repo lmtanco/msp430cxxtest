@@ -72,7 +72,8 @@ private:
     device_register16 _WDTCTL;
 };
 
-WATCHDOG &the_watchdog = *new WATCHDOG{};
+// Instancia para manejar el watchdog.
+extern WATCHDOG &the_watchdog;
 
 // Nos aseguramos de que el layout de la clase es el esperado:
 // - El primer atributo no estático está a offset cero
