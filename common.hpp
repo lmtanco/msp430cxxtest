@@ -76,11 +76,18 @@ public:
         _IE1 &= ~(bits::WDTIE);
     }
 
-    // Una forma de hacer que el watchdog esté bien alineado
+
+
+    // Una forma de hacer que los SFR esté bien alineado
      // en memoria es redefinir el operador new.
      static void* operator new(std::size_t) {
          return reinterpret_cast<void*>(0x000);
      }
+
+     // Hay que definir un constructor porque si no en el de por defecto
+     // el compilador llama a memset con muchos cero después del new.
+     SFR() {}
+
 private:
     device_register8 _IE1;
     device_register8 _IE2;

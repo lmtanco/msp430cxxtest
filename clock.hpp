@@ -31,6 +31,10 @@ public:
          return reinterpret_cast<void*>(0x10F8);
      }
 
+     // Imprescindible que definamos constructor. Si no el compilador
+     // llama a memset con 0s después del new!
+     DCOCALIBRATION(){}
+
      // Devolver el valor de la calibración para el registro DCO.
      memory_byte get_dco_calibration(DCOFREQ which) {
          memory_byte temp;
@@ -110,6 +114,10 @@ DCOCALIBRATION& cal=*new DCOCALIBRATION{};
         static void* operator new(std::size_t) {
             return reinterpret_cast<void*>(0x8056);
         }
+
+        // Imprescindible que definamos constructor. Si no el compilador
+        // llama a memset con 0s después del new!
+        CLOCK(){}
     private:
         device_register8 _DCOCTL;
         device_register8 _BCSCTL1;

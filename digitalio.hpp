@@ -92,6 +92,10 @@ public:
        return reinterpret_cast<void*>(port_traits::address);
     }
 
+    // Hay que definir constructor porque si no el compilador llama a memset
+    // con 0s después de llamar al new.
+    GPIO_P() {}
+
     // Configurar los pines del puerto como puerto
     constexpr void as_digital_io(bits which = bits::ALL) {
         _PxSEL &= ~(which);

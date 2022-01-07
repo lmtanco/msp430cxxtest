@@ -39,6 +39,12 @@ public:
         return reinterpret_cast<void*>(0x120);
     }
 
+    // Imprescindible que definamos constructor. Si no el compilador
+    // llama a memset con 0s después del new! Eso nos crea un reset
+    // puesto que no se puede poner 0s en WDTCTL sin poner el password.
+    WATCHDOG(){}
+
+
     // Parar el watchdog.
     void stop(){
         _WDTCTL = bits::WDTPW | bits::WDTHOLD;
