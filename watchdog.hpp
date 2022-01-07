@@ -68,9 +68,6 @@ public:
             _WDTCTL = bits::WDTPW+bits::WDTTMSEL+bits::WDTCNTCL;
             break;
         }
-    }
-    void enable_timer_interrupt()
-    {
         // Esto se hace en IE1
         the_sfrs.enable_wdt_interrupt();
     }
