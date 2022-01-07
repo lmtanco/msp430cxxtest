@@ -112,7 +112,7 @@ DCOCALIBRATION& cal=*new DCOCALIBRATION{};
         }
 
         static void* operator new(std::size_t) {
-            return reinterpret_cast<void*>(0x8056);
+            return reinterpret_cast<void*>(0x0056);
         }
 
         // Imprescindible que definamos constructor. Si no el compilador
