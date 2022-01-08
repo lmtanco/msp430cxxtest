@@ -81,7 +81,7 @@ public:
     // Una forma de hacer que los SFR esté bien alineado
      // en memoria es redefinir el operador new.
      static void* operator new(std::size_t) {
-         return reinterpret_cast<void*>(0x000);
+         return reinterpret_cast<void*>(0x0000);
      }
 
      // Hay que definir un constructor porque si no en el de por defecto
