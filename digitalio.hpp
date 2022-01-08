@@ -119,6 +119,13 @@ public:
         _PxOUT &= ~(which & _PxDIR);
     }
 
+    // Comnutar salida, usa "XOR" para modificar los bits
+    // Sólo se modifican los bits de which que sean de salida.
+    constexpr void toggle_output(bits which = bits::ALL)
+    {
+            _PxOUT ^= (which & _PxDIR);
+    }
+
     // Configurar como entrada, usa AND para modificar los bits
     constexpr void as_input(bits which = bits::ALL,
                   input_type what = input_type::NOINTERNALRES) {
@@ -145,7 +152,7 @@ public:
 
     // Borrar flags de interrupcion;
     constexpr void clear_interrupt_flags(bits which) {
-        _PxIE &= ~(which);
+        _PxIFG &= ~(which);
     }
 
     // Habilitar interrupción en PxIE y PxIES
