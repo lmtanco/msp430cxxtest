@@ -1,6 +1,6 @@
 # msp430cxxtest
 
-[Warning this is untested! I am programming this on my holidays and I do not have a microcontroller at hand, just the compiler!]
+[Started first tests on msp430g2553!]
 
 First attempts at creating a c++ hw abstraction layer for the TI msp430g2553 microcontroller. 
 
