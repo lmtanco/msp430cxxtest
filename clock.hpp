@@ -9,7 +9,6 @@
 #define EUMA_CLOCK_HPP_
 
 #include "common.hpp"
-#include <array>
 
 namespace euma {
 
@@ -36,8 +35,8 @@ public:
      DCOCALIBRATION(){}
 
      // Devolver el valor de la calibración para el registro DCO.
-     memory_byte get_dco_calibration(DCOFREQ which) {
-         memory_byte temp;
+     constexpr memory_byte get_dco_calibration(DCOFREQ which) {
+         memory_byte temp = CALDCO_1MHZ;
          switch (which) {
          case DCOFREQ::_16MHZ:
              temp = CALDCO_16MHZ;
@@ -55,17 +54,21 @@ public:
          return temp;
      }
      // Devolver el valor de la calibración para el registro DCO.
-     memory_byte get_bcs1_calibration(DCOFREQ which) {
-         memory_byte temp;
+     constexpr memory_byte get_bcs1_calibration(DCOFREQ which) {
+         memory_byte temp=CALBC1_1MHZ;
          switch (which) {
          case DCOFREQ::_16MHZ:
              temp = CALBC1_16MHZ;
+             break;
          case DCOFREQ::_12MHZ:
              temp = CALBC1_12MHZ;
+             break;
          case DCOFREQ::_8MHZ:
              temp = CALBC1_8MHZ;
+             break;
          case DCOFREQ::_1MHZ:
              temp = CALBC1_1MHZ;
+             break;
          }
          return temp;
      }
@@ -105,10 +108,10 @@ DCOCALIBRATION& cal=*new DCOCALIBRATION{};
     class CLOCK {
     public:
 
-        void set_dco(DCOFREQ which) {
+        constexpr void set_dco(DCOFREQ which = DCOFREQ::_1MHZ) {
             _DCOCTL = 0;
             _BCSCTL1 = cal.get_bcs1_calibration(which);
-            _DCOCTL = cal.get_dco_calibration(which); // cheating! Tengo q crear clase para esto.
+            _DCOCTL = cal.get_dco_calibration(which);
         }
 
         static void* operator new(std::size_t) {
