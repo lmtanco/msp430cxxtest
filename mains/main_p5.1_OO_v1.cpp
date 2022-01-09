@@ -27,9 +27,9 @@ using namespace euma;
 
 void main(void) {
 
-    constexpr const uint8_t ST_ESTADO_A = 0;
-    constexpr const uint8_t ST_ESTADO_B = 1;
-    constexpr const uint8_t ST_ESTADO_C = 2;
+    constexpr uint8_t ST_ESTADO_A = 0;
+    constexpr uint8_t ST_ESTADO_B = 1;
+    constexpr uint8_t ST_ESTADO_C = 2;
 
 	uint8_t estado = ST_ESTADO_A;
 
