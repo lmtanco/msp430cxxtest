@@ -6,8 +6,7 @@ First attempts at creating a c++ library for the TI msp430g2553 microcontroller.
 
 It is *not* meant to be a hardware abstraction layer - the hardware is not abstracted at all. 
 
-The idea is only to have an "easy to use correctly, difficult to use incorrectly (Scott Meyers)" software interface to the msp430g2553. 
-With this in mind, the library hides the device registers as private members of classes. These are only accessed via class methods. 
+The idea is only to have an "easy to use correctly, difficult to use incorrectly (Scott Meyers)" software interface to the msp430g2553. In some cases this can be a real challenge, such as in the PWM output (still working on that!). With this in mind, the library hides the device registers as private members of classes. These are only accessed via class methods. 
 
 There are several tests in the main/ folder. These are lines from one of them: 
 
