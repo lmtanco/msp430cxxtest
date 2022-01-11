@@ -1,16 +1,10 @@
 # msp430cxxtest
 
-[Started first tests on msp430g2553!]
+[Work in progress. Some clock, watchdog, GPIO and timer functionality]
 
-First attempts at creating a c++ hw abstraction layer for the TI msp430g2553 microcontroller. 
+First attempts at creating a c++ library for the TI msp430g2553 microcontroller. It is *not* meant to be a hardware abstraction layer - the hardware is not abstracted at all. The idea is only to have an "Easy to use correctly, difficult to use incorrectly (Scott Meyers)" software interface to the msp430g2553. To attempt that, the library hides the device registers as private members of classes. These are only accessed via class methods. 
 
-Using ideas from Dan & Ben Saks explained in these two conferences: 
-* [Confefence 1: Memory-Mapped Devices as Objects - Dan Saks - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
-* [Conference 2: Handling a Family of Hardware Devices with a Single Implementation - Ben Saks - CppCon 2021](https://www.youtube.com/watch?v=EM83l5NZ15c)
-
-The idea is to have an "Easy to use correctly, difficult to use incorrectly" software interface to the msp430g2553. 
-
-These are fragments of the main.cpp which tests the library: 
+There are several tests in the main/ folder. These are lines from one of them: 
 
 ```C++
 
@@ -36,3 +30,15 @@ These are fragments of the main.cpp which tests the library:
     the_watchdog.enable_timer_interrupt(WATCHDOG::_32ms);
 
 ```
+
+The library uses the ideas explained by Dan & Ben Saks in these two conferences: 
+* [Confefence 1: Memory-Mapped Devices as Objects - Dan Saks - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
+* [Conference 2: Handling a Family of Hardware Devices with a Single Implementation - Ben Saks - CppCon 2021](https://www.youtube.com/watch?v=EM83l5NZ15c)
+
+I was also very inspired to start this by this other conference by Dan Saks: 
+* [Conference 3: CppCon 2016: Dan Saks “extern c: Talking to C Programmers about C++”](https://www.youtube.com/watch?v=D7Sd8A6_fYU)
+
+Compiled with Code Composer Studio version 11.1.0.00011, which ships with the TI MSP30 Compiler Version 18.1, which supports C++14.
+Tested with MSP-EXP430G2ET board with an msp4302535 MCU. 
+
+
