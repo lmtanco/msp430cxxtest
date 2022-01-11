@@ -32,15 +32,16 @@ There are several tests in the main/ folder. These are lines from one of them:
     the_watchdog.enable_timer_interrupt(WATCHDOG::_32ms);
 
 ```
+I am using Code Composer Studio version 11.1.0.00011, which ships with the TI MSP30 Compiler Version 18.1, which supports C++14.
+I am testing the code with the MSP-EXP430G2ET board with an msp4302535 MCU. 
 
 The library uses the ideas explained by Dan & Ben Saks in these two conferences: 
-* [Confefence 1: Memory-Mapped Devices as Objects - Dan Saks - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
-* [Conference 2: Handling a Family of Hardware Devices with a Single Implementation - Ben Saks - CppCon 2021](https://www.youtube.com/watch?v=EM83l5NZ15c)
+* [Memory-Mapped Devices as Objects - Dan Saks - CppCon 2020](https://www.youtube.com/watch?v=uwzuAGtAEFk)
+* [Handling a Family of Hardware Devices with a Single Implementation - Ben Saks - CppCon 2021](https://www.youtube.com/watch?v=EM83l5NZ15c)
 
-I was also very inspired to start this by this other conference by Dan Saks: 
-* [Conference 3: CppCon 2016: Dan Saks “extern c: Talking to C Programmers about C++”](https://www.youtube.com/watch?v=D7Sd8A6_fYU)
+I was also very inspired to start this work by this other conference by Dan Saks: 
+* [CppCon 2016: Dan Saks “extern c: Talking to C Programmers about C++”](https://www.youtube.com/watch?v=D7Sd8A6_fYU)
 
-Compiled with Code Composer Studio version 11.1.0.00011, which ships with the TI MSP30 Compiler Version 18.1, which supports C++14.
-Tested with MSP-EXP430G2ET board with an msp4302535 MCU. 
+
 
 
