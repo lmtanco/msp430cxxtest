@@ -45,6 +45,7 @@
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DISPLAY_ERROR_NUMBER.2064517072" name="Emit diagnostic identifier numbers (--display_error_number, -pden)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DISPLAY_ERROR_NUMBER" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DIAG_WRAP.1298983719" name="Wrap diagnostic messages (--diag_wrap)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DIAG_WRAP" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DIAG_WRAP.off" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.INCLUDE_PATH.801656412" name="Add dir to #include search path (--include_path, -I)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.INCLUDE_PATH" valueType="includePath">
+									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/msp430"/>
 									<listOptionValue builtIn="false" value="${CCS_BASE_ROOT}/msp430/include"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${CG_TOOL_ROOT}/include"/>
@@ -83,7 +84,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="mains/main.cpp|mains/main_p5.1_OO_v1.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="mains/main_timer.cpp|mains/main_p5.1_OO_v1.cpp|mains/main.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -133,10 +134,13 @@
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DIAG_WRAP.1367710741" name="Wrap diagnostic messages (--diag_wrap)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DIAG_WRAP" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.DIAG_WRAP.off" valueType="enumerated"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.INCLUDE_PATH.1066748725" name="Add dir to #include search path (--include_path, -I)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.INCLUDE_PATH" valueType="includePath">
 									<listOptionValue builtIn="false" value="${CCS_BASE_ROOT}/msp430/include"/>
+									<listOptionValue builtIn="false" value="${PROJECT_ROOT}/msp430"/>
 									<listOptionValue builtIn="false" value="${PROJECT_ROOT}"/>
 									<listOptionValue builtIn="false" value="${CG_TOOL_ROOT}/include"/>
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.ADVICE__POWER.157576421" name="Enable checking of ULP power rules (--advice:power)" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.ADVICE__POWER" useByScannerDiscovery="false" value="&quot;1,2,3,4,5,6,7,8,9,11,12,13,14,15&quot;" valueType="string"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.OPT_FOR_SPEED.431371" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.OPT_FOR_SPEED" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.OPT_FOR_SPEED._none" valueType="enumerated"/>
+								<option id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.OPT_LEVEL.release.470833282" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.OPT_LEVEL.release" useByScannerDiscovery="false" value="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compilerID.OPT_LEVEL.4" valueType="enumerated"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compiler.inputType__C_SRCS.1056748258" name="C Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compiler.inputType__C_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compiler.inputType__CPP_SRCS.1054023740" name="C++ Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compiler.inputType__CPP_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compiler.inputType__ASM_SRCS.312785827" name="Assembly Sources" superClass="com.ti.ccstudio.buildDefinitions.MSP430_21.6.compiler.inputType__ASM_SRCS"/>
@@ -183,5 +187,12 @@
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/cxxtest"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/cxxtest"/>
+		</configuration>
+	</storageModule>
 </cproject>
