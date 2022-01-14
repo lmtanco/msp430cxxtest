@@ -48,31 +48,6 @@ namespace euma {
             OUT2
         };
 
-        enum pwmmode: uint16_t {
-            OUT0_OUTPUT,
-            OUT0_SET,
-            OUT0_TOGGLE,
-            OUT0_RESET,
-
-            OUT1_OUTPUT,
-            OUT1_SET,
-            OUT1_TOGGLE_RESET,
-            OUT1_SET_RESET,
-            OUT1_TOGGLE,
-            OUT1_RESET,
-            OUT1_TOGGLE_SET,
-            OUT1_RESET_SET,
-
-            OUT2_OUTPUT,
-            OUT2_SET,
-            OUT2_TOGGLE_RESET,
-            OUT2_SET_RESET,
-            OUT2_TOGGLE,
-            OUT2_RESET,
-            OUT2_TOGGLE_SET,
-            OUT2_RESET_SET
-        };
-
         template <typename Tag, typename T>
         struct Tagged
         {
