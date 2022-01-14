@@ -11,6 +11,7 @@
 #define EUMA_TIMER_HPP_
 
 #include "common.hpp"
+#include "digitalio.hpp"
 
 namespace euma {
 
@@ -40,23 +41,101 @@ namespace euma {
             TACCR1_CCIFG,
             TACCR2_CCIFG
         };
+
+        enum pwmoutput {
+            OUT0,
+            OUT1,
+            OUT2
+        };
+
+        enum pwmmode: uint16_t {
+            OUT0_OUTPUT,
+            OUT0_SET,
+            OUT0_TOGGLE,
+            OUT0_RESET,
+
+            OUT1_OUTPUT,
+            OUT1_SET,
+            OUT1_TOGGLE_RESET,
+            OUT1_SET_RESET,
+            OUT1_TOGGLE,
+            OUT1_RESET,
+            OUT1_TOGGLE_SET,
+            OUT1_RESET_SET,
+
+            OUT2_OUTPUT,
+            OUT2_SET,
+            OUT2_TOGGLE_RESET,
+            OUT2_SET_RESET,
+            OUT2_TOGGLE,
+            OUT2_RESET,
+            OUT2_TOGGLE_SET,
+            OUT2_RESET_SET
+        };
+
+        template <typename Tag, typename T>
+        struct Tagged
+        {
+          explicit Tagged(const T& value) : value{value} { }
+          T value;
+        };
+
+        template <typename Tag, typename T>
+        constexpr Tagged<Tag, T> tag(const T& value)
+        {
+          return Tagged<Tag, T>{value};
+        }
+
+        struct WorkCycleTag {};
+        struct PeriodTag {};
+        struct ToggleTimeTag {};
+        struct SemiPeriodTag {};
+
+        using WorkCycle = Tagged<WorkCycleTag, uint16_t>;
+        using Period = Tagged<PeriodTag, uint16_t>;
+        using ToggleTime = Tagged<ToggleTimeTag, uint16_t>;
+        using Semiperiod = Tagged<SemiPeriodTag, uint16_t>;
     };
 
     // Particularidades del timer 1
-    struct timer1_A3_traits{
+    struct timer1_traits{
+        // Dirección de comienzo de los registros del timer 1.
         static constexpr std::uintptr_t address{0x0180};
-        static device_register16& _TAxIV; //0x011E;
+        static device_register16& _TAxIV; //TA1IV: 0x011E
+        // TODO: static constexpr void select_out0_pin(){}
+        // TODO: static constexpr void select_out1_pin(){}
+        static constexpr void select_out2_pin(){
+            _P2DIR |= GPIO::BIT5;
+            _P2SEL |= GPIO::BIT5;
+        }
+    private:
+        static device_register8& _P2SEL;  //P2SEL: 0x002E
+        static device_register8& _P2SEL2; //P2SEL2:0x0042
+        static device_register8& _P2DIR;  //P2DIR: 0x002A
     };
 
     // Particularidades del timer 0
-    struct timer0_A3_traits{
+    struct timer0_traits{
+        // Dirección de comienzo de los registros del timer 0
         static constexpr std::uintptr_t address{0x0160};
-        static device_register16& _TAxIV; //0x012E;
+        static device_register16& _TAxIV; //TA0IV: 0x012E
+        // TODO: static constexpr void select_out0_pin(){}
+        static constexpr void select_out1_pin(){
+            _P1SEL |= GPIO::BIT6;
+            _P1DIR |= GPIO::BIT6;
+        }
+        // TODO: static constexpr void select_out2_pin(){}
+    private:
+        static device_register8& _P1SEL;  //P1SEL: 0x0026
+        static device_register8& _P1SEL2; //P1SEL2 0x0041
+        static device_register8& _P1DIR;  //P1DIR: 0x0022
     };
 
 
     // Clase que empaqueta el timer A3 del msp4302553
-    template <typename timer_traits>
+    template <
+              typename timer_traits
+             >
     class TIMER_T : TIMER {
     public:
 
@@ -76,12 +155,12 @@ namespace euma {
             constexpr uint16_t clock_source = TIMER::SMCLK;
             constexpr uint16_t clock_div = TIMER::_8;
             _TAxCTL = taclr | clock_source | clock_div;
+
         }
 
         // Enganchar a la fuente de reloj
         void set_clock_source(TIMER::clk clock_source,
-                              TIMER::div clock_div)
-        {
+                              TIMER::div clock_div)        {
             _TAxCTL |= clock_source | clock_div;
         }
 
@@ -120,14 +199,38 @@ namespace euma {
                 break;
             }
         }
+        // Habilitar alguna de las interrupciones
+        void disable_interrupt(TIMER::interr which) {
+            constexpr uint16_t taifg = 0x0001;
+            constexpr uint16_t taie  = 0x0002;
+            constexpr uint16_t ccifg = 0x0001;
+            constexpr uint16_t ccie  = 0x0010;
+            switch (which) {
+            case interr::TAIFG:
+                _TAxCTL &= ~taie;
+                _TAxCTL &= ~taifg;
+                break;
+            case interr::TACCR0_CCIFG:
+                _TAxCCTL0 &= ~ccie;
+                _TAxCCTL0 &= ~ccifg;
+                break;
+            case interr::TACCR1_CCIFG:
+                _TAxCCTL1 &= ~ccie;
+                _TAxCCTL1 &= ~ccifg;
+                break;
+            case interr::TACCR2_CCIFG:
+                _TAxCCTL2 &= ~ccie;
+                _TAxCCTL2 &= ~ccifg;
+                break;
+            }
+        }
 
-
-    private:
+    protected:
         device_register16 _TAxCTL;
         device_register16 _TAxCCTL0;
         device_register16 _TAxCCTL1;
         device_register16 _TAxCCTL2;
-        uint16_t          _padding[4];
+        uint16_t          _padding[4]; // Los registros del temporizador A3 no están seguidos, hay un hueco.
         device_register16 _TAxR;
         device_register16 _TAxCCR0;
         device_register16 _TAxCCR1;
@@ -135,11 +238,10 @@ namespace euma {
     };
 
     // Objetos globales para manejar el timer1
-    extern TIMER_T<timer1_A3_traits>& timer1;
+    extern TIMER_T<timer1_traits>& timer1;
 
     // Objetos globales para manejar el timer0
-    extern TIMER_T<timer0_A3_traits>& timer0;
-
+    extern TIMER_T<timer0_traits>& timer0;
 
 
 }
