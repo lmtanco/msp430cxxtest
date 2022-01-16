@@ -1,6 +1,6 @@
 # msp430cxxtest
 
-[Work in progress. Some clock, watchdog, GPIO and timer functionality]
+[Work in progress. Some clock, watchdog, GPIO, timer and PWM functionality]
 
 First attempts at creating a c++ library for the TI msp430g2553 microcontroller. 
 
